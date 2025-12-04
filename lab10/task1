@@ -1,0 +1,67 @@
+include Irvine32.inc
+
+.data
+prompt1 byte "enter height: ",0
+prompt2 byte "enter width: ",0
+height dword 0
+width1 dword 0
+prompt3 byte "would you like to continue? Y/N: ", 0
+prompt4 byte "invalid input: ", 0
+answer dword 0
+
+.code
+main proc
+
+looper:
+mov edx, offset prompt1
+call writestring
+call readint
+mov ebx, eax
+mov edx, offset prompt2
+call writestring
+call readint
+
+call calcSprite
+mov eax, answer
+call writeint
+call crlf
+
+validation:
+mov edx, offset prompt3
+call writestring
+call readchar
+call crlf
+cmp al, "Y"
+je looper
+cmp al, "y"
+je looper
+cmp al, "N"
+je ikhtitam
+cmp al, "n"
+je ikhtitam
+
+mov edx, offset prompt4
+call writestring
+jmp validation
+
+ikhtitam:
+
+exit
+main endp
+
+calcSprite Proc uses eax ebx ecx edx
+push ebp
+mov ebp, esp
+
+mov height, ebx
+mov width1, eax
+
+imul ebx
+mov answer, eax
+
+mov esp, ebp
+pop ebp
+ret
+calcSprite endp
+
+end main
